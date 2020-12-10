@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback} from 'react'
-import img from "./assets/image2020-11-30_18-49-26.png";
+import img from "./assets/test.png";
 import {
   createPositionBuffer,
   createProgram,
@@ -10,19 +10,17 @@ export const ProgramCPP = ({angle = 0.0, scale = [1.0,1.0]}) => {
   const renderWebGL = useCallback((image) => {
     const canvas = document.querySelector("#glCanvas");
     const gl = canvas.getContext("webgl");
-    gl.canvas.width = image.width * scale[0]
-    gl.canvas.height = image.height * scale[1]
+    gl.canvas.width = window.innerHeight
+    gl.canvas.height = window.innerHeight
 
     const { program } = createProgram(gl)
     const { positionLocation, positionBuffer } = createPositionBuffer(gl, program)
     createTextureBuffer(gl, program, image)
-    initProgram(gl, program, positionBuffer, positionLocation)
+    initProgram(gl, program, positionBuffer, positionLocation, scale)
     drawProgram(gl)
-    console.timeEnd('render')
   }, [scale])
 
   useEffect(() => {
-    console.time('render')
     const image = new Image()
     image.src = img
     image.onload = function () {
@@ -30,5 +28,5 @@ export const ProgramCPP = ({angle = 0.0, scale = [1.0,1.0]}) => {
     }
   }, [renderWebGL])
 
-  return <canvas id="glCanvas" style={{'transform': `rotate(${angle}deg)` }} />
+  return <canvas id="glCanvas" className="cns" />
 }

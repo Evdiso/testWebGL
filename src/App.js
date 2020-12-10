@@ -14,7 +14,7 @@ export const App = () => {
   }
 
   return <div className="App">
-    <ProgramCPP angle={angle} scale={[range, range]} />
+    <ProgramCPP angle={angle} scale={[parseFloat(range), parseFloat(range)]} />
     <div className="controls">
       <label className="scale-label">
         Angle - {angle}
@@ -24,7 +24,7 @@ export const App = () => {
       </label>
       <label className="scale-label">
         Scale
-        <input type="range" min="0.0" max="1.0" step="0.05" value={range}
+        <input type="number" min={0.0} value={range} step={0.01}
                onChange={(e) => _onChangeRange(e.target.value)}
         />
       </label>

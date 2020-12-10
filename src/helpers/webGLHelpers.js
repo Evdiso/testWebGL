@@ -55,10 +55,10 @@ export const createTextureBuffer = (gl, program, image) => {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 }
 
-export const initProgram = (gl, program, positionBuffer, positionLocation) => {
+export const initProgram = (gl, program, positionBuffer, positionLocation, scale) => {
   resizeCanvasToDisplaySize(gl.canvas);
 
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  gl.viewport(0.0, 0.0, gl.canvas.width, gl.canvas.height);
   gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.useProgram(program);
@@ -76,12 +76,14 @@ export const initProgram = (gl, program, positionBuffer, positionLocation) => {
 
   const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
   gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+
+  const scaleLocation = gl.getUniformLocation(program, "u_scale");
+  gl.uniform2f(scaleLocation, scale[0], scale[1]);
 }
 
 export const drawProgram = (gl) => {
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
 }
-
 
 export const resizeCanvasToDisplaySize = (canvas, multiplier) => {
   multiplier = multiplier || 1;
