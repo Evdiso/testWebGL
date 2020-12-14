@@ -1,17 +1,14 @@
 export const VERTEX_SHADER = `
   attribute vec2 a_position;
-  uniform vec2 u_scale;
+  uniform mat3 translationMatrix;
+  uniform mat3 projectionMatrix;
+  uniform mat3 rotationMatrix;
+  uniform vec2 u_resolution;
   varying vec2 v_texCoord;
-  
-  mat2 scale(vec2 _scale){
-    return mat2(_scale.x,0.0,
-                0.0,_scale.y);
-  }
-  
+    
   void main()
-  {
-    vec2 res = scale(u_scale) * a_position;
-    gl_Position = vec4(res, 0, 1);
-    v_texCoord = res;
+  {  
+    gl_Position = vec4( (rotationMatrix * translationMatrix * projectionMatrix * vec3(a_position, 1.0)).xy, 0, 1);
+    v_texCoord = vec2(a_position * vec2(u_resolution[0], u_resolution[1]));
   }
 `;
