@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback} from 'react'
-import img from "./assets/image.png";
+import img from "./assets/image2020-11-30_18-49-26.png";
 import {
   createPositionBuffer,
   createProgram,

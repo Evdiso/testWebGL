@@ -79,9 +79,10 @@ export const initProgram = (gl, program, positionBuffer, positionLocation, scale
   gl.uniform1f(intLocation, int);
 
   const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-  // const x = Math.cos(angle)
-  // const y = Math.sin(angle)
-  gl.uniform2f(resolutionLocation, k, 1.0);
+  const x = Math.cos(angle)
+  const y = Math.sin(angle)
+
+  gl.uniform2f(resolutionLocation, 1.0, 1.0);
 
   const scaleLocation = gl.getUniformLocation(program, "u_scale");
   gl.uniform2f(scaleLocation, scale[0], scale[1]);

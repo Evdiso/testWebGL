@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {ProgramCPP} from "./programCPP";
 
 export const App = () => {
-  const [angle, setAngle] = useState(0.0)
+  const [angle, setAngle] = useState(45.0)
   const [range, setRange] = useState(1.0)
   const [int, setInt] = useState(0.0)
   const [x, setX] = useState(0.0)
