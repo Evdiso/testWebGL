@@ -51,17 +51,9 @@ void main()
 
     if (texColor.r < u_int && texColor.g < u_int && texColor.b < u_int) {
       discard;
-    }
+    } 
     
-   gl_FragColor = texColor;
-   
-   if (v_texCoord.y < 0.002 && v_texCoord.y > -0.002) {
-    gl_FragColor = vec4(1.0,0.0,0.0, 1.0);
-   }
-
-   if (v_texCoord.x < 0.001 && v_texCoord.x > -0.001) {
-    gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
-   }
+    gl_FragColor = texColor;
 }
 
 `
