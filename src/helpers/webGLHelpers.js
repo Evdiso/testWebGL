@@ -31,15 +31,17 @@ export const createProgram = (gl) => {
 export const createPositionBuffer = (gl, program, image) => {
   const positionLocation = gl.getAttribLocation(program, "a_position");
   const positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+  const position = [
     -1.0, 1.0,
     1.0, 1.0,
     1.0, -1.0,
     1.0, -1.0,
     -1.0, -1.0,
     -1.0, 1.0
-  ]), gl.STATIC_DRAW);
+  ];
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(position), gl.STATIC_DRAW);
 
   return { positionBuffer, positionLocation }
 }
@@ -55,19 +57,20 @@ export const createTextureBuffer = (gl, program, image) => {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 }
 
-export const initProgram = (gl, program, positionBuffer, positionLocation, scale, translate, angle, int) => {
-  // resizeCanvasToDisplaySize(gl.canvas);
-  const k = gl.canvas.width / gl.canvas.height
-
+export const initProgram = (gl, program, positionBuffer, positionLocation) => {
+  resizeCanvasToDisplaySize(gl.canvas)
   gl.viewport(0.0, 0.0, gl.canvas.width, gl.canvas.height);
-  gl.clearColor(0, 0, 0, 0);
-  gl.clear(gl.COLOR_BUFFER_BIT);
   gl.useProgram(program);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.enableVertexAttribArray(positionLocation);
-  gl.vertexAttribPointer(
-    positionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+}
+
+export const drawProgram = (gl, program, scale, translate, angle, int) => {
+  console.time('RENDERING');
+  gl.clearColor(0, 0, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
 
   const beginAngle = gl.getUniformLocation(program, "beginAngle");
   gl.uniform1f(beginAngle, 0.0);
@@ -79,13 +82,7 @@ export const initProgram = (gl, program, positionBuffer, positionLocation, scale
   gl.uniform1f(intLocation, int);
 
   const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-  const x = Math.cos(angle)
-  const y = Math.sin(angle)
-
-  gl.uniform2f(resolutionLocation, 1.0, 1.0);
-
-  const scaleLocation = gl.getUniformLocation(program, "u_scale");
-  gl.uniform2f(scaleLocation, scale[0], scale[1]);
+  gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
 
   const projectionMatrix = gl.getUniformLocation(program, "projectionMatrix");
   const translationMatrix = gl.getUniformLocation(program, "translationMatrix");
@@ -97,10 +94,8 @@ export const initProgram = (gl, program, positionBuffer, positionLocation, scale
   gl.uniformMatrix3fv(translationMatrix, false, translation);
   gl.uniformMatrix3fv(rotationMatrix, false, rotation);
 
-}
-
-export const drawProgram = (gl) => {
   gl.drawArrays(gl.TRIANGLES, 0, 6);
+  console.timeEnd('RENDERING');
 }
 
 export const resizeCanvasToDisplaySize = (canvas, multiplier) => {

@@ -59,7 +59,7 @@ void main()
     gl_FragColor = vec4(1.0,0.0,0.0, 1.0);
    }
    
-   if (v_texCoord.x < 0.001 && v_texCoord.x > -0.001) {
+   if (v_texCoord.x < 0.002 && v_texCoord.x > -0.002) {
     gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
    }
 }
