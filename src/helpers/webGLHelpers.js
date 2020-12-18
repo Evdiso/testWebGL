@@ -33,7 +33,7 @@ export const createPositionBuffer = (gl, program, image) => {
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1.0, 1.0,
+    -1.0 , 1.0,
     1.0, 1.0,
     1.0, -1.0,
     1.0, -1.0,
@@ -56,9 +56,6 @@ export const createTextureBuffer = (gl, program, image) => {
 }
 
 export const initProgram = (gl, program, positionBuffer, positionLocation, scale, translate, angle, int) => {
-  // resizeCanvasToDisplaySize(gl.canvas);
-  const k = gl.canvas.width / gl.canvas.height
-
   gl.viewport(0.0, 0.0, gl.canvas.width, gl.canvas.height);
   gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -79,10 +76,7 @@ export const initProgram = (gl, program, positionBuffer, positionLocation, scale
   gl.uniform1f(intLocation, int);
 
   const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-  const x = Math.cos(angle)
-  const y = Math.sin(angle)
-
-  gl.uniform2f(resolutionLocation, 1.0, 1.0);
+  gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
 
   const scaleLocation = gl.getUniformLocation(program, "u_scale");
   gl.uniform2f(scaleLocation, scale[0], scale[1]);
@@ -101,18 +95,6 @@ export const initProgram = (gl, program, positionBuffer, positionLocation, scale
 
 export const drawProgram = (gl) => {
   gl.drawArrays(gl.TRIANGLES, 0, 6);
-}
-
-export const resizeCanvasToDisplaySize = (canvas, multiplier) => {
-  multiplier = multiplier || 1;
-  const width  = canvas.clientWidth  * multiplier | 0;
-  const height = canvas.clientHeight * multiplier | 0;
-  if (canvas.width !== width ||  canvas.height !== height) {
-    canvas.width  = width;
-    canvas.height = height;
-    return true;
-  }
-  return false;
 }
 
 const m3 = {

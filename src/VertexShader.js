@@ -7,8 +7,13 @@ export const VERTEX_SHADER = `
   varying vec2 v_texCoord;
     
   void main()
-  {  
-    gl_Position = vec4( (rotationMatrix * translationMatrix * projectionMatrix * vec3(a_position, 1.0)).xy, 0, 1);
-    v_texCoord = vec2(a_position * vec2(u_resolution[0], u_resolution[1]));
+  { 
+    float ratio = u_resolution.x / u_resolution.y;
+    vec3 scaledPosition = projectionMatrix * vec3(a_position, 1.0);
+    vec3 rotatePosition = rotationMatrix * scaledPosition;
+    vec3 position = translationMatrix * rotatePosition;
+   
+    gl_Position = vec4(position / vec3(ratio, 1.0, 1.0), 1);
+    v_texCoord = a_position;
   }
 `;
